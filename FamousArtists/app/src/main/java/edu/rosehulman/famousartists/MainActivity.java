@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
+        // TODO: Hide the FAB
+        
+
         // Removed FAB's click listener since we won't use the FAB
 
         if (savedInstanceState == null) {
