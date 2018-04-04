@@ -1,13 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="edu.rosehulman.famousartists.fragments.WelcomeFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/mona_lisa_small"
+                tools:context="edu.rosehulman.famousartists.fragments.WelcomeFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/welcome" />
+        style="@style/WelcomeFont"
+        android:textColor="@android:color/white"
+        android:text="@string/welcome"/>
 
     <Button
         android:id="@+id/start_button"
@@ -15,6 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:text="@string/start_button_text" />
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/start_button_text"/>
 
 </RelativeLayout>
