@@ -7,4 +7,5 @@
     <string name="dialog_painting_title">Edit painting info</string>
     <string name="artist">Artist</string>
     <string name="notes">Notes</string>
+    <string name="tap_to_begin">Tap to begin</string>
 </resources>

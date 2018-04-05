@@ -20,81 +20,85 @@ import edu.rosehulman.famousartists.fragments.WelcomeFragment;
 import edu.rosehulman.famousartists.utils.Constants;
 
 public class MainActivity extends AppCompatActivity
-        implements WelcomeFragment.OnStartPressedListener,
-        PaintingListFragment.OnPaintingSelectedListener,
-        PaintingDetailFragment.OnFlingListener {
+    implements WelcomeFragment.OnStartPressedListener,
+    PaintingListFragment.OnPaintingSelectedListener,
+    PaintingDetailFragment.OnSwipeListener
+{
 
-    private FloatingActionButton mFab;
+  private FloatingActionButton mFab;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        // TODO: Hide the FAB
-        
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    mFab = (FloatingActionButton) findViewById(R.id.fab);
+    // TODO: Hide the FAB
 
-        // Removed FAB's click listener since we won't use the FAB
 
-        if (savedInstanceState == null) {
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            Fragment fragment = new WelcomeFragment();
-            ft.add(R.id.fragment_container, fragment);
-            ft.commit();
-        }
+    // Removed FAB's click listener since we won't use the FAB
+
+    if (savedInstanceState == null) {
+      FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+      Fragment fragment = new WelcomeFragment();
+      ft.add(R.id.fragment_container, fragment);
+      ft.commit();
+    }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle action bar item clicks here. The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
+    int id = item.getItemId();
+
+    //noinspection SimplifiableIfStatement
+    if (id == R.id.action_settings) {
+      return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    return super.onOptionsItemSelected(item);
+  }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+  @Override
+  public void onStartPressed() {
+    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    Fragment fragment = new PaintingListFragment();
+    ft.replace(R.id.fragment_container, fragment);
+    ft.addToBackStack("list");
+    ft.commit();
+  }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+  @Override
+  public void onPaintingSelected(Painting painting) {
+    Log.d(Constants.TAG, "Painting selected");
+    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    Fragment fragment = PaintingDetailFragment.newInstance(painting);
 
-        return super.onOptionsItemSelected(item);
-    }
+    // TODO: Create a transition.
+    Slide slideTransition = new Slide(Gravity.RIGHT);
+    slideTransition.setDuration(200);
+    fragment.setEnterTransition(slideTransition);
 
-    @Override
-    public void onStartPressed() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = new PaintingListFragment();
-        ft.replace(R.id.fragment_container, fragment);
-        ft.addToBackStack("list");
-        ft.commit();
-    }
+    ft.replace(R.id.fragment_container, fragment);
+    ft.addToBackStack("detail");
+    ft.commit();
+  }
 
-    @Override
-    public void onPaintingSelected(Painting painting) {
-        Log.d(Constants.TAG, "Painting selected");
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fragment = PaintingDetailFragment.newInstance(painting);
-
-        // TODO: Create a transition.
-
-        ft.replace(R.id.fragment_container, fragment);
-        ft.addToBackStack("detail");
-        ft.commit();
-    }
-
-    @Override
-    public void onSwipe() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        fm.popBackStackImmediate();
-        ft.commit();
-    }
+  @Override
+  public void onSwipe() {
+    FragmentManager fm = getSupportFragmentManager();
+    FragmentTransaction ft = fm.beginTransaction();
+    fm.popBackStackImmediate();
+    ft.commit();
+  }
 }

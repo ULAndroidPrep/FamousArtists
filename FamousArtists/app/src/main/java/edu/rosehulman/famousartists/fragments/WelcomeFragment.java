@@ -20,52 +20,60 @@ import edu.rosehulman.famousartists.R;
  */
 public class WelcomeFragment extends Fragment {
 
-    private OnStartPressedListener mListener;
+  private OnStartPressedListener mListener;
 
-    public WelcomeFragment() {
-        // Required empty public constructor
-    }
+  public WelcomeFragment() {
+    // Required empty public constructor
+  }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Need to wait for the activity to be created to have an action bar.
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setTitle(R.string.app_name);
-    }
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    // Need to wait for the activity to be created to have an action bar.
+    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+    actionBar.setTitle(R.string.app_name);
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_welcome, container, false);
-        ((Button)view.findViewById(R.id.start_button)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.onStartPressed();
-            }
-        });
-        return view;
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    View view = inflater.inflate(R.layout.fragment_welcome, container, false);
+    view.setOnTouchListener(new View.OnTouchListener() {
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnStartPressedListener) {
-            mListener = (OnStartPressedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnStartPressedListener");
-        }
-    }
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        mListener.onStartPressed();
+        return true;
+      }
+    });
+//        ((Button)view.findViewById(R.id.start_button)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mListener.onStartPressed();
+//            }
+//        });
+    return view;
+  }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    if (context instanceof OnStartPressedListener) {
+      mListener = (OnStartPressedListener) context;
+    } else {
+      throw new RuntimeException(context.toString()
+          + " must implement OnStartPressedListener");
     }
+  }
 
-    public interface OnStartPressedListener {
-        public void onStartPressed();
-    }
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    mListener = null;
+  }
+
+  public interface OnStartPressedListener {
+    public void onStartPressed();
+  }
 }

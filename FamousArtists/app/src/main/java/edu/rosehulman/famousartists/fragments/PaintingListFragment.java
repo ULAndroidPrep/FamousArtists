@@ -29,51 +29,60 @@ import edu.rosehulman.famousartists.utils.Constants;
  */
 public class PaintingListFragment extends Fragment {
 
-    private OnPaintingSelectedListener mListener;
-    private PaintingAdapter mAdapter;
+  private OnPaintingSelectedListener mListener;
+  private PaintingAdapter mAdapter;
 
-    public PaintingListFragment() {
-        // Required empty public constructor
-    }
+  public PaintingListFragment() {
+    // Required empty public constructor
+  }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // The adapter needs the listener so that when a painting is selected, it can
-        // ask the listener (the MainActivity) to switch out the fragment.
-        mAdapter = new PaintingAdapter(mListener, getContext());
-    }
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    // The adapter needs the listener so that when a painting is selected, it can
+    // ask the listener (the MainActivity) to switch out the fragment.
+    mAdapter = new PaintingAdapter(mListener, getContext());
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_painting_list, container, false);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.painting_list_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mAdapter);
-        return view;
-    }
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+    actionBar.setTitle(R.string.app_name);
+    int defaultColor = (ContextCompat.getColor(getContext(), R.color.colorPrimary));
+    actionBar.setBackgroundDrawable(new ColorDrawable(defaultColor));
+  }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnPaintingSelectedListener) {
-            mListener = (OnPaintingSelectedListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnPaintingSelectedListener");
-        }
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    View view = inflater.inflate(R.layout.fragment_painting_list, container, false);
+    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.painting_list_recycler_view);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    recyclerView.setAdapter(mAdapter);
+    return view;
+  }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    if (context instanceof OnPaintingSelectedListener) {
+      mListener = (OnPaintingSelectedListener) context;
+    } else {
+      throw new RuntimeException(context.toString()
+          + " must implement OnPaintingSelectedListener");
     }
+  }
 
-    public interface OnPaintingSelectedListener {
-        void onPaintingSelected(Painting painting);
-    }
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    mListener = null;
+  }
+
+  public interface OnPaintingSelectedListener {
+    void onPaintingSelected(Painting painting);
+  }
 }
